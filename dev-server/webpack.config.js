@@ -93,6 +93,11 @@ const config = [{
     filename: '[name].js',
     publicPath: '/',
   },
+  resolve: {
+    alias: {
+      'ringcentral-integration': path.resolve(__dirname, '../../ringcentral-js-integration-commons/src/'),
+    }
+  }
 }];
 
 config.port = '8191';

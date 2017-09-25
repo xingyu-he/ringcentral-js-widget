@@ -16,6 +16,9 @@ const phone = new Phone({
   brandConfig,
   prefix,
   appVersion: version,
+  done: () => {
+    phone.initialize();
+  }
 });
 
 const store = createStore(phone.reducer);
