@@ -110,7 +110,6 @@ export default class Webphone extends RcModule {
     this._remoteVideo = null;
     this._localVideo = null;
     this._sessions = new Map();
-
     this._reducer = getWebphoneReducer(this.actionTypes);
 
     this.addSelector('sessionPhoneNumbers',
@@ -1178,6 +1177,7 @@ export default class Webphone extends RcModule {
   clearSessionCaching() {
     this.store.dispatch({
       type: this.actionTypes.clearSessionCaching,
+      sessions: [...this._sessions.values()].map(normalizeSession),
     });
   }
 
