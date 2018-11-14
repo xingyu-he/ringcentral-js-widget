@@ -37,6 +37,7 @@ Date Updated	Fri, 24 Aug 2018 18:57:55
 
 import { createProcess } from 'marten';
 import { LoginCTI } from '../../../steps/commons/login';
+import LogoutCTI from '../../../steps/commons/logout';
 import TypeComposeToField from '../../../steps/commons/SMS/typeComposeToField';
 import TypeTextSMS from '../../../steps/commons/SMS/typeTextSMS';
 import SendSMS from '../../../steps/commons/SMS/sendSMS';
@@ -50,8 +51,8 @@ describe('Commom SMS: =====>', () => {
     tags: [
       ['widgets'],
       ['salesforce'],
-      ['sfb'],
-      ['dynamics'],
+      ['google'],
+      ['office'],
     ],
     levels: ['p0'],
     options: [
@@ -69,6 +70,7 @@ describe('Commom SMS: =====>', () => {
       TypeTextSMS,
       SendSMS,
       NavigateToMessages,
+      LogoutCTI
     )(context);
     /*
     __Step1__: Enter some characters in "To" field.
@@ -114,5 +116,6 @@ describe('Commom SMS: =====>', () => {
     */
     await process.execTo(NavigateToMessages);
     expect(await NavigateToMessages.getFirstItemText(context)).toEqual(expect.stringContaining(textSMS));
+    await process.execTo(LogoutCTI);
   });
 });

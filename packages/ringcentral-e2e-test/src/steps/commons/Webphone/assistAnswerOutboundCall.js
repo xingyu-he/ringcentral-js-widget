@@ -1,10 +1,11 @@
-import WebPhone from './index';
+import Webphone from './index';
 
-export default class PreAnswerCall extends WebPhone {
-  static get steps() {
-    return [
-      ...super.steps,
-      this.preAnswerCall,
-    ];
+export default function AnswerCall(...args) {
+  return class extends Webphone(...args) {
+    static get steps() {
+      return [
+        this.preAnswerCall,
+      ];
+    }
   }
 }

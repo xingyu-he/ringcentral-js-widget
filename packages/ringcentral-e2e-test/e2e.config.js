@@ -9,13 +9,23 @@ const loginInfo = isExists ? require(loginInfoPath) : {};
 
 module.exports = {
   selectorLabel: 'data-sign',
-  caseServices: [{
-    name: 'einstein',
-    url: 'http://einstein.int.ringcentral.com/',
-    handler: './einstein.js'
-  }],
+  caseServices: {
+    originField: 'origin',
+    handlerField: 'handler',
+    projectIdField: 'projectId',
+    urlField: 'url',
+    defaultOrigin: 'einstein',
+    list: [{
+      origin: 'einstein',
+      url: 'http://einstein.int.ringcentral.com/',
+      handler: './src/lib/caseServices/einstein',
+      projectId: loginInfo && loginInfo.caseServices && loginInfo.caseServices.projectId || 1309,
+      username: loginInfo && loginInfo.caseServices && loginInfo.caseServices.username || null,
+      password: loginInfo && loginInfo.caseServices && loginInfo.caseServices.password || null,
+    }]
+  },
   exec: {
-    drivers: ['puppeteer', 'seleniumWebdriverFirefox', 'seleniumWebdriverChrome'],
+    drivers: ['puppeteer', 'seleniumWebdriverFirefox', 'enzyme'],
     levels: ['p0', 'p1'],
     brands: ['rc'],
     envs: ['xmnup'],
@@ -44,6 +54,17 @@ module.exports = {
   },
   tester: {
     jest: {
+      reporters:["default",
+        ['<rootDir>/src/lib/reporter', {
+          "pageTitle": "Test Report",
+          "outputPath": "test-report.html",
+          "includeFailureMsg": true,
+          "includeConsoleLog": false,
+          "dateFormat": "yyyy-mm-dd HH:MM:ss",
+          "theme":"lightTheme",
+          "sort": "titleAsc"
+        }]
+      ],
       testURL: 'http://localhost',
       moduleNameMapper: {
         'assets/images/.+?\\.svg$': '<rootDir>/src/__mocks__/svgMock.js',
@@ -61,9 +82,33 @@ module.exports = {
   },
   params: {
     projects: {
-      office: {
+      google: {
         type: 'extension',
         source: './src/targets/google',
+        params: {
+          brands: {
+            rc: {
+              extension: './build/extension/google/rc',
+              location: 'chrome-extension://pgjpmeckehbghpkamdammcgmmmbojbdi/client.html',
+            },
+            bt: {
+              extension: './build/extension/google/bt',
+              location: 'chrome-extension://pgjpmeckehbghpkamdammcgmmmbojbdi/client.html',
+            },
+            att: {
+              extension: './build/extension/google/att',
+              location: 'chrome-extension://pgjpmeckehbghpkamdammcgmmmbojbdi/client.html',
+            },
+            telus: {
+              extension: './build/extension/google/telus',
+              location: 'chrome-extension://pgjpmeckehbghpkamdammcgmmmbojbdi/client.html',
+            }
+          }
+        }
+      },
+      office: {
+        type: 'extension',
+        source: './src/targets/office',
         params: {
           brands: {
             rc: {
