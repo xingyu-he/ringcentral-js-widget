@@ -1,7 +1,13 @@
 import sleep from 'ringcentral-integration/lib/sleep';
 
-const video_reg = /(http|https):\/\/(meetings.(ringcentral|btcloudphone.bt|businessconnect.telus).com)(\/\w+)?(\/\d+)|(http|https):\/\/(rcdev.zoom.us)(\/\w+)?(\/\d+)/;
+const video_reg = /(http|https):\/\/(rcdev\.zoom\.us)(\/\w+)?(\/\d+)/;
 const conf_reg = /^(http|https):\/\/rcconf.net\/\w+$/;
+const video_desc_reg = {
+  rc: /(http|https):\/\/meetings\.ringcentral\.com\/teleconference/,
+  bt: /(http|https):\/\/meetings.btcloudphone\.bt\.com\/teleconference/,
+  att: /(http|https):\/\/meetings-officeathand\.att\.com\/teleconference/,
+  telus: /(http|https):\/\/meetings.businessconnect\.telus\.com\/teleconference/
+}
 
 
 /* global $ */
@@ -55,8 +61,11 @@ export default class addMeeting{
       var a = document.querySelector('[contenteditable="true"][aria-multiline="true"][role="textbox"]');
       return a.innerHTML;
     });
-    const result = video_reg.test(text);
-    return result;
+    const brand = context.options.tag.brands;
+    const link_com = video_reg.test(text);
+    const link_spe = `video_desc_reg.${brand}`.test(text);  
+    debuger;
+    return link_com&&link_spe;
   }
 
   static async checkConfDescExist(context){
