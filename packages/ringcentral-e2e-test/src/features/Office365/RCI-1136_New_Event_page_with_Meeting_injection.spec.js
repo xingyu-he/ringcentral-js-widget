@@ -52,8 +52,11 @@ Date Updated	Tue, 06 Nov 2018 14:47:44
       ],
       levels: ['p1'],
       brands: ['rc', 'bt', 'att', 'telus'],
+      accounts: ['CM_RC_US'],
       options: [
-       {
+       {         
+         usrname: '18665133464' ,
+         password: 'Test!123',
          o365URL: 'https://outlook.office365.com/owa/?path=/calendar/view/Day',
          authSuccess: 'Authorized Account',
          appNames: {
@@ -62,14 +65,13 @@ Date Updated	Tue, 06 Nov 2018 14:47:44
            bt: 'BT Cloud Phone for Office365',
            telus: 'TELUS Business Connect for Office365',
          },
-         accounts: ['CM_RC_US'], callingType: 'myRCPhone'
        }
       ],
     }, async (context) => {
       const process = createProcess(
         Entry,
         LoginCTI,
-        skipGuide,
+        //skipGuide,
         AuthorizeOffice,
         addMeeting,
       )(context);

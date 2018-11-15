@@ -3,10 +3,10 @@ import sleep from 'ringcentral-integration/lib/sleep';
 const video_reg = /(http|https):\/\/(rcdev\.zoom\.us)(\/\w+)?(\/\d+)/;
 const conf_reg = /^(http|https):\/\/rcconf.net\/\w+$/;
 const video_desc_reg = {
-  rc: /(http|https):\/\/meetings\.ringcentral\.com\/teleconference/,
-  bt: /(http|https):\/\/meetings.btcloudphone\.bt\.com\/teleconference/,
-  att: /(http|https):\/\/meetings-officeathand\.att\.com\/teleconference/,
-  telus: /(http|https):\/\/meetings.businessconnect\.telus\.com\/teleconference/
+  'rc': /(http|https):\/\/meetings\.ringcentral\.com(\/\w+)?/,
+  'bt': /(http|https):\/\/meetings.btcloudphone\.bt\.com(\/\w+)?/,
+  'att': /(http|https):\/\/meetings-officeathand\.att\.com(\/\w+)?/,
+  'telus': /(http|https):\/\/meetings.businessconnect\.telus\.com(\/\w+)?/
 }
 
 
@@ -63,8 +63,7 @@ export default class addMeeting{
     });
     const brand = context.options.tag.brands;
     const link_com = video_reg.test(text);
-    const link_spe = `video_desc_reg.${brand}`.test(text);  
-    debuger;
+    const link_spe = video_desc_reg[brand].test(text);  
     return link_com&&link_spe;
   }
 
@@ -89,7 +88,7 @@ export default class addMeeting{
       dialog.dismiss()
     });
     await sleep(3000);
- 
+
     const text = await page.evaluate(()=>{
       var a = document.getElementById('MeetingCompose.LocationInputLabel');
       return a && a.parentElement.innerHTML;

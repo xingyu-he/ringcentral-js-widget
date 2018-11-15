@@ -49,8 +49,14 @@ export default function Login(account) {
           Function('phone', login)(app.props().phone);
         } else {
           // TODO temp solution before resolve support seleniumWebdriver with realLogin
-          await $(app).execute(login);
-          // await this.realLogin(option.playload.loginAccount, app, page);
+          //await $(app).execute(login);
+           //await this.realLogin(option.playload.loginAccount, app, page);
+           const brand = tag.brands;
+           if (brand=='rc'||brand=='att') {
+              await this.realLogin(option.playload.loginAccount, app, page);
+           } else {
+              await this.bt_telus_realLogin(option.playload.loginAccount, app, page);
+           }
         }
         await $(app).waitForSelector('@tabNavigationView');
         // TODO temp support extension
@@ -73,6 +79,18 @@ export default function Login(account) {
         await $(loginPage).waitFor(1000);
         await $(loginPage).type('[id=password]', password);
         await $(loginPage).click('[data-test-automation-id=signInBtn]');
+      }
+
+      static async bt_telus_realLogin({ username, password }, app, page) {
+        await $(app).waitForSelector('[class*=loginButton]');
+        await $(app).click('[class*=loginButton]');
+        // TODO support seleniumWebdriver
+        const loginPage = await PuppeteerUtils.waitForNewPage(page);
+        // TODO clear?
+        await $(loginPage).waitForSelector('input#rc-login-number');
+        await $(loginPage).type('input#rc-login-number', username);
+        await $(loginPage).type('input#rc-login-password', password);
+        await $(loginPage).click('[data-test-automation-id=submit]');
       }
 
       static get steps() {
